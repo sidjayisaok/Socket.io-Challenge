@@ -1,5 +1,6 @@
 //requiring express.js
-var app = require('express')();
+var express = require('express');
+var app = express();
 //setting up http server via express
 var http = require('http').Server(app);
 //adding socket.io service
@@ -7,9 +8,12 @@ var io = require('socket.io')(http);
 //assign port to variable
 var Port = process.env.PORT || 3000;
 
+//middleware
+app.use(express.static(__dirname + '/assets'));
+
 //basic get function
 app.get('/', function(request, response){
-    response.sendFile(__dirname + '/index.html');
+    response.sendFile(__dirname + '/assets/index.html');
 });
 
 //socket.io implementation
