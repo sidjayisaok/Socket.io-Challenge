@@ -9,11 +9,11 @@ var io = require('socket.io')(http);
 var Port = process.env.PORT || 3000;
 
 //middleware
-app.use(express.static(__dirname + '/assets'));
+app.use(express.static(__dirname + '/src/client/app'));
 
 //basic get function
 app.get('/', function(request, response){
-    response.sendFile(__dirname + '/assets/index.html');
+    response.sendFile(__dirname + '/src/client/app/index.html');
 });
 
 //socket.io implementation
@@ -25,6 +25,12 @@ io.on('connection', function(socket){
         //this sends our message to the client page
         io.emit('chat message', msg);
     });
+
+    //test this function
+    socket.emit('server event', {foo:'bar'});
+    socket.on('client event', function(data){
+    socket.broadcast.emit('update label', data);
+  });
     
     //this logs when user leaves
     socket.on('disconnect', function(){
